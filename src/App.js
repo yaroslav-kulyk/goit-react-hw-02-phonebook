@@ -4,7 +4,13 @@ const shortid = require('shortid');
 
 class App extends Component {
   state = {
-    contacts: [],
+    contacts: [
+      { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
+      { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
+      { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
+      { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
+    ],
+    filter: '',
     name: '',
     number: '',
   };
@@ -13,22 +19,25 @@ class App extends Component {
     this.setState({ [e.currentTarget.name]: e.currentTarget.value });
   };
 
-  onSubmit = e => {
+  addContact = e => {
     e.preventDefault();
-    console.log(this.state.contacts);
-    const newArr = [
-      ...this.state.contacts,
-      {
-        id: shortid.generate(),
-        name: this.state.name,
-        number: this.state.number,
-      },
-    ];
-    // const newArr = this.state.contacts.concat([
-    //   { id: 'id-1', name: this.state.name },
-    // ]);
-    this.setState({ contacts: newArr });
+
+    const { name, number } = this.state;
+    const newContact = {
+      id: shortid.generate(),
+      name,
+      number,
+    };
+
+    this.setState(({ contacts }) => ({
+      contacts: [...contacts, newContact],
+    }));
+
     this.reset();
+  };
+
+  changeFilter = e => {
+    this.setState({ filter: e.currentTarget.value });
   };
 
   reset = () => {
@@ -36,10 +45,14 @@ class App extends Component {
   };
 
   render() {
+    const normalizedFilter = this.state.filter.toLowerCase();
+    const visibleContacts = this.state.contacts.filter(contact =>
+      contact.name.toLowerCase().includes(normalizedFilter),
+    );
     return (
       <div>
         <h1>Phonebook</h1>
-        <form onSubmit={this.onSubmit}>
+        <form onSubmit={this.addContact}>
           <label>
             Name{' '}
             <input
@@ -67,8 +80,15 @@ class App extends Component {
           <button type="submit">Add contact</button>
         </form>
 
+        <p>Find contacts by name</p>
+        <input
+          type="text"
+          value={this.state.filter}
+          onChange={this.changeFilter}
+        ></input>
+
         <ul>
-          {this.state.contacts.map(contact => {
+          {visibleContacts.map(contact => {
             return (
               <li key={contact.id}>
                 {contact.name}: {contact.number}
