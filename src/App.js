@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
+import ContactForm from './components/ContactForm/ContactForm';
+import Filter from './components/Filter/Filter';
+import ContactList from './ContactList/ContactList';
 import './App.css';
+
 const shortid = require('shortid');
 
 class App extends Component {
@@ -11,18 +15,9 @@ class App extends Component {
       { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
     ],
     filter: '',
-    name: '',
-    number: '',
   };
 
-  onChange = e => {
-    this.setState({ [e.currentTarget.name]: e.currentTarget.value });
-  };
-
-  addContact = e => {
-    e.preventDefault();
-
-    const { name, number } = this.state;
+  addContact = ({ name, number }) => {
     const newContact = {
       id: shortid.generate(),
       name,
@@ -32,8 +27,6 @@ class App extends Component {
     this.setState(({ contacts }) => ({
       contacts: [...contacts, newContact],
     }));
-
-    this.reset();
   };
 
   changeFilter = e => {
@@ -52,42 +45,12 @@ class App extends Component {
     return (
       <div>
         <h1>Phonebook</h1>
-        <form onSubmit={this.addContact}>
-          <label>
-            Name{' '}
-            <input
-              type="text"
-              name="name"
-              pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-              title="Имя может состоять только из букв, апострофа, тире и пробелов. Например Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan и т. п."
-              required
-              value={this.state.name}
-              onChange={this.onChange}
-            />
-          </label>
-          <label>
-            Number{' '}
-            <input
-              type="tel"
-              name="number"
-              pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-              title="Номер телефона должен состоять цифр и может содержать пробелы, тире, круглые скобки и может начинаться с +"
-              required
-              value={this.state.number}
-              onChange={this.onChange}
-            />
-          </label>
-          <button type="submit">Add contact</button>
-        </form>
+        <ContactForm onFormSubmit={this.addContact} />
 
-        <p>Find contacts by name</p>
-        <input
-          type="text"
-          value={this.state.filter}
-          onChange={this.changeFilter}
-        ></input>
-
-        <ul>
+        <h2>Contacts</h2>
+        <Filter value={this.state.filter} onChange={this.changeFilter} />
+        <ContactList contacts={visibleContacts} />
+        {/* <ul>
           {visibleContacts.map(contact => {
             return (
               <li key={contact.id}>
@@ -95,7 +58,7 @@ class App extends Component {
               </li>
             );
           })}
-        </ul>
+        </ul> */}
       </div>
     );
   }
