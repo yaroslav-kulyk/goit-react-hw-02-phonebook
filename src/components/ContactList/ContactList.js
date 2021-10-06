@@ -1,4 +1,5 @@
 import ContactListItem from './ContactListItem';
+import PropTypes, { arrayOf } from 'prop-types';
 
 const ContactList = ({ contacts, onContactDelete }) => {
   return (
@@ -15,6 +16,15 @@ const ContactList = ({ contacts, onContactDelete }) => {
       })}
     </ul>
   );
+};
+
+ContactList.propTypes = {
+  contacts: arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string,
+    }),
+  ),
+  onContactDelete: PropTypes.func,
 };
 
 export default ContactList;
