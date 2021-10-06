@@ -9,11 +9,7 @@ const ContactList = ({ contacts, onContactDelete }) => {
         return (
           <li key={id} className={s.item}>
             <ContactListItem name={name} number={number} />
-            <button
-              type="button"
-              className={s.filterButton}
-              onClick={() => onContactDelete(id)}
-            >
+            <button type="button" onClick={() => onContactDelete(id)}>
               Delete
             </button>
           </li>
