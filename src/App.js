@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ContactForm from './components/ContactForm/ContactForm';
 import Filter from './components/Filter/Filter';
 import ContactList from './components/ContactList/ContactList';
+import s from './App.module.css';
 
 const shortid = require('shortid');
 
@@ -56,7 +57,7 @@ class App extends Component {
     );
 
     return (
-      <div>
+      <div className={s.container}>
         <h1>Phonebook</h1>
         <ContactForm onFormSubmit={this.addContact} />
 

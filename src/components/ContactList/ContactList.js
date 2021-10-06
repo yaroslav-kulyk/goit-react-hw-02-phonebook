@@ -1,14 +1,19 @@
 import ContactListItem from './ContactListItem';
 import PropTypes, { arrayOf } from 'prop-types';
+import s from './ContactList.module.css';
 
 const ContactList = ({ contacts, onContactDelete }) => {
   return (
-    <ul>
+    <ul className={s.contactList}>
       {contacts.map(({ id, name, number }) => {
         return (
-          <li key={id}>
+          <li key={id} className={s.item}>
             <ContactListItem name={name} number={number} />
-            <button type="button" onClick={() => onContactDelete(id)}>
+            <button
+              type="button"
+              className={s.filterButton}
+              onClick={() => onContactDelete(id)}
+            >
               Delete
             </button>
           </li>
